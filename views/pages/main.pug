@@ -6,11 +6,12 @@ append content
 
         +pageHead('Рассылки')
 
-        +table(['Название', 'Группы', 'Отправитель', 'Шаблон', 'Прогресс', 'Время создания', 'Создатель', 'Статус'])
+        +table(['Название', 'Тема', 'Группы', 'Отправитель', 'Шаблон', 'Прогресс', 'Время создания', 'Создатель', 'Статус'])
 
-    
+
     +modalAdd('Добавить рассылку')
         +modalField('name','Название')
+        +modalField('subject','Тема')
         +modalSelect('templateId', 'Шаблон')
         +modalSelect('transportId', 'Отправитель')
         +modalChecks('groups', 'Группы')
@@ -18,6 +19,7 @@ append content
 block scripts
     +rowTmplWithStatus()
         +cell('name')
+        +cell('subject')
         td 
             div 
                 span ${groups.map(g => g.deliveryGroup.name).join(', ')}
@@ -31,7 +33,7 @@ block scripts
             span(class="btn btn-sm btn-primary ion-ios-play play-delivery me-2" title="Запустить рассылку" data-id="${id}")
             span(class="btn btn-sm btn-warning ion-ios-pause pause-delivery me-2" title="Приостановить рассылку" data-id="${id}")
             span(class="btn btn-sm btn-danger ion-stop stop-delivery me-2" title="Завершить рассылку" data-id="${id}")
-    
+
     +modalCheckBox()
 
     +selectOption()

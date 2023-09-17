@@ -54,12 +54,15 @@ const updateDelivery = async (delivery, address) => {
 }
 
 const mail = async(transporter, delivery, address) => {
+
+    const html = delivery.template.html.replaceAll('[email]', address.email)
+
     const msg = {
         from: `${delivery.transport.sender} <${delivery.transport.username}>`,
         to: address.email,
-        subject: 'Сообщение от zangi',
+        subject: delivery.subject,
         text: '',
-        html: delivery.template.html
+        html: html
     }
 
     const info = await transporter.sendMail(msg)

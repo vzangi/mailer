@@ -19,6 +19,7 @@ class DeliveryController extends BaseController {
     async addItem(req, res) {
         const {
             name,
+            subject,
             templateId,
             transportId,
             groups
@@ -30,6 +31,7 @@ class DeliveryController extends BaseController {
                 templateId,
                 transportId,
                 name,
+                subject,
             })
 
             for (let group of groups)
@@ -97,25 +99,7 @@ class DeliveryController extends BaseController {
 
         res.json(delivery)
     }
-
     
-
-    mailer(req, res) {
-
-        const { id } = req.params
-
-
-        const out = fs.openSync('./out.log', 'a')
-        const err = fs.openSync('./err.log', 'a')
-
-        spawn('node', ['mailer.js'], {
-            stdio: ['ignore', out, err],
-            detached: true
-        }).unref()
-
-        res.json({ ok: 1 })
-    }
-
 }
 
 module.exports = new DeliveryController(Delivery, 'deliveries')

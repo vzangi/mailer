@@ -21,6 +21,7 @@ $(async function () {
     $(".save-item").click(function () {
         data = {}
         data.name = $("#name").val().trim()
+        data.subject = $("#subject").val().trim()
         data.templateId = $("#templateId").val()
         data.transportId = $("#transportId").val()
         data.groups = []
