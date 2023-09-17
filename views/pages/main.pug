@@ -1,0 +1,39 @@
+extends ../layouts/tableEditor
+
+append content 
+
+    div(class="container mt-4")
+
+        +pageHead('Рассылки')
+
+        +table(['Название', 'Группы', 'Отправитель', 'Шаблон', 'Прогресс', 'Время создания', 'Создатель', 'Статус'])
+
+    
+    +modalAdd('Добавить рассылку')
+        +modalField('name','Название')
+        +modalSelect('templateId', 'Шаблон')
+        +modalSelect('transportId', 'Отправитель')
+        +modalChecks('groups', 'Группы')
+
+block scripts
+    +rowTmplWithStatus()
+        +cell('name')
+        td 
+            div 
+                span ${groups.map(g => g.deliveryGroup.name).join(', ')}
+        td ${transport.sender}
+        td ${template.name}
+        td ${progress}%
+        td ${makeDate}
+        td ${user.name}
+        td ${statusName}
+        +lastCell()
+            span(class="btn btn-sm btn-primary ion-ios-play play-delivery me-2" title="Запустить рассылку" data-id="${id}")
+            span(class="btn btn-sm btn-warning ion-ios-pause pause-delivery me-2" title="Приостановить рассылку" data-id="${id}")
+            span(class="btn btn-sm btn-danger ion-stop stop-delivery me-2" title="Завершить рассылку" data-id="${id}")
+    
+    +modalCheckBox()
+
+    +selectOption()
+
+    script(src="/js/deliveries.js") 

@@ -1,0 +1,19 @@
+extends ../layouts/tableEditor
+
+append content 
+
+    div(class="container mt-4")
+        +pageHead('Группы')
+
+        +table(['Название'])
+
+    +modalAdd('Добавить группу')
+        +modalField('name','Название группы')
+
+block scripts 
+    +rowTmpl()
+        +cell('name')
+        +lastCell()
+
+    script(src="/js/groups.js")
+    

@@ -1,0 +1,30 @@
+extends ../layouts/main
+
+block head 
+    link(href="/froala/css/froala_editor.pkgd.min.css" rel="stylesheet")
+    script(src="/froala/js/froala_editor.pkgd.min.js")
+    script(src="/froala/js/languages/ru.js")
+
+append content 
+
+    div(class="container mt-4")
+        div(class="row")
+            div(class="col-12")
+                h1 Редактор шаблона
+            div(class="col-6")
+                nav(aria-label="breadcrumb")
+                    ol(class="breadcrumb mt-2")
+                        li(class="breadcrumb-item")
+                            a(href="/templates") Шаблоны
+                        li(class="breadcrumb-item active" aria-current="page")= item.name
+            div(class="col-6 text-end")
+                a(class="btn btn-success btn-sm save-template") Сохранить
+        hr
+
+        input(type="hidden" id="templateId" value=item.id)
+
+        textarea    
+
+block scripts 
+    script(src="/js/editor.js") 
+    

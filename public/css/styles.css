@@ -1,0 +1,138 @@
+header {
+    background: teal;
+    color: #fff;
+}
+
+header a {
+    color: inherit;
+    text-decoration: none;
+}
+
+header nav a {
+    margin-right: 1em;
+}
+
+.header-box {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.table-editor .edited-box {
+    display: flex;
+    align-items: center;
+}
+.table-editor input {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.table-editor input:focus {
+    background: #fff;
+}
+.table-editor input+div {
+    display: none;
+}
+.table-editor input.changed+div {
+    display: block;
+}
+.table-editor .edit-btns {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.table-editor tr:hover .edit-btns {
+    opacity: 1;
+}
+
+.burger-menu {
+    display: none;
+}
+
+@media (max-width: 768px){
+    .burger-menu {
+        display: block;
+    }
+    header nav {
+        display: none;
+    }
+    header nav.open {
+        display: block;
+    }
+    header nav {
+        position: absolute;
+        top: 68px;
+        background: teal;
+        z-index: 10;
+        left: 0;
+        right: 0;
+    }
+    header nav a {
+        display: block;
+        text-align: center;
+        margin: 0;
+        padding: 10px;
+        border-top: 1px solid #029a9a;
+    }
+}
+
+.pause-delivery,
+.play-delivery {
+    padding: 4px 10px;
+}
+.remove-item {
+    padding: 4px 9px;
+}
+
+/* Выделение цветом строк по статусу */
+
+/* Создан, но не запущен */
+tr.status-0{}
+
+/* Запущен */
+tr.status-1{
+    background-color: #6060ff;
+    color: #fff;
+}
+
+/* Остановлен */
+tr.status-2{
+    background-color: #ffff60;
+}
+
+/* Завершён */
+tr.status-3{
+    background-color: #c5c5c5;
+}
+
+tr.statused td,
+tr.statused td input {
+    background-color: inherit;
+    color: inherit;
+}
+tr.statused td input:focus {
+    color: black;
+}
+
+tr.statused .remove-item,
+tr.statused .stop-delivery,
+tr.statused .pause-delivery,
+tr.statused .play-delivery {
+    display: none;
+}
+
+tr.statused.status-0 .play-delivery,
+tr.statused.status-0 .remove-item {
+    display: inline-block;
+}
+tr.statused.status-1 .pause-delivery,
+tr.statused.status-1 .stop-delivery {
+    display: inline-block;
+}
+tr.statused.status-2 .play-delivery,
+tr.statused.status-2 .stop-delivery {
+    display: inline-block;
+}
+tr.statused.status-3 .remove-item {
+    display: inline-block;
+}

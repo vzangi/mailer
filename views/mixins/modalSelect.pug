@@ -1,0 +1,10 @@
+mixin modalSelect(fieldName, fieldText)
+    div(class="mb-3")
+        label(for=fieldName class="form-label")= fieldText
+        select(class="form-control" id=fieldName)
+            if block 
+                block
+
+mixin selectOption()
+    script(id="optionTmpl" type="text/x-jquery-tmpl")
+        option(value="${id}") ${name} 

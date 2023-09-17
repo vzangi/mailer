@@ -1,0 +1,10 @@
+mixin modalCheckBox()
+    script(id="modalCheckboxTmpl" type="text/x-jquery-tmpl")
+        div(class="form-check")
+            input(class="form-check-input" type="checkbox" value="${id}" id="flexCheck_${id}")
+            label(class="form-check-label" for="flexCheck_${id}") ${name}
+
+mixin modalChecks(field, name)
+    div(class="mb-3")
+        label(class="form-label")= name
+        div(class=field) 

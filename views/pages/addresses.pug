@@ -1,0 +1,40 @@
+extends ../layouts/tableEditor
+
+append content 
+
+    div(class="container mt-4")
+        +pageHead('Адреса')
+
+        div(class="row")
+            div(class="col-12")
+                div(class="input-group mb-3")
+                    span(class="input-group-text" id="basic-addon1") @
+                    input(type="text" class="form-control" placeholder="E-mail адрес" aria-describedby="basic-addon1" id="findAddress") 
+                    button(class="btn btn-primary" type="button" id="findAddressBtn") Найти
+
+        +table(['Адрес', 'Клиент', 'Группы'])
+    
+    +modalAdd('Добавить адрес')
+        +modalField('email','Адрес', 'email')
+        +modalField('client','Клиент')
+        +modalChecks('groups', 'Группы')
+
+    +modalAdd('Изменить группы', 'selectGroupForm', 'save-groups')
+        +modalChecks('groups', 'Группы')
+        input(type="hidden" id="selectAddressId")
+
+block scripts 
+    +rowTmpl()
+        +cell('email')
+        +cell('client')
+        td 
+            div 
+                span(class="ion-edit editGroupsBtn me-1" data-id="${id}" data-groups="${JSON.stringify(deliveryGroups)}") 
+                span ${deliveryGroups.map(g => g.name).join(', ')}
+    
+        +lastCell()
+
+    +modalCheckBox()
+
+    script(src="/js/addresses.js")
+    

@@ -1,0 +1,20 @@
+extends ../layouts/tableEditor
+
+append content 
+
+    div(class="container mt-4")
+        +pageHead('Шаблоны')
+
+        +table(['Название'])
+
+    +modalAdd('Добавить адрес')
+        +modalField('name','Название шаблона')
+
+block scripts 
+    +rowTmpl()
+        +cell('name')
+        +lastCell()
+            a(href="/templates/editor/${id}" class="btn btn-primary btn-sm ion-document-text edit-template me-2" title="Редактировать шаблон")
+
+    script(src="/js/templates.js")
+    

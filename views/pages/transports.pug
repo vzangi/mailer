@@ -1,0 +1,23 @@
+extends ../layouts/tableEditor
+
+append content 
+
+    div(class="container mt-4")
+        +pageHead('Ящики')
+
+        +table(['Отправитель', 'Ящик', 'Ключ'])
+
+    +modalAdd('Добавить ящик')
+        +modalField('sender','Отправитель')
+        +modalField('username','E-mail адрес', 'email')
+        +modalField('password','Ключ')
+  
+block scripts 
+    +rowTmpl()
+        +cell('sender')
+        +cell('username')
+        +cell('password')
+        +lastCell()
+
+    script(src="/js/transports.js")
+    

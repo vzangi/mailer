@@ -1,0 +1,26 @@
+extends ../layouts/tableEditor
+
+append content 
+    div(class="container mt-4")
+        +pageHead('Пользователи')
+
+        +table(['Имя', 'Логин', 'Роль'])
+
+    +modalAdd('Добавить адрес')
+        +modalField('name','Имя')
+        +modalField('login','Логин')
+        +modalField('password','Пароль')
+        +modalSelect('role', 'Роль')
+            option(value='2') Администратор
+            option(value='3') Пользователь
+            option(value='4') Гость
+
+block scripts 
+    +rowTmpl()
+        +cell('name')
+        +cell('login')
+        td 
+            div(class='edited-box') ${role == 1 ? 'Суперадмин' : role == 2 ? 'Админ' : role == 3 ?'Пользователь' : 'Гость'}
+        +lastCell()
+
+    script(src="/js/users.js")

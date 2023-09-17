@@ -1,0 +1,25 @@
+mixin rowTmpl()
+    script(id="rowTmpl" type="text/x-jquery-tmpl")
+        tr(data-id="${id}")
+            if block 
+                block
+
+mixin cell(field)
+    td 
+      div(class='edited-box')
+        input(value="${"+field+"}" data-id="${id}" data-value="${"+field+"}" data-field=field)
+        div
+          span(class="btn btn-success ion-checkmark btn-sm save-btn" title="Сохранить изменения")
+
+mixin lastCell() 
+    td 
+      div(class="edit-btns text-end")
+        if block 
+            block
+        span(class="btn btn-danger ion-trash-a btn-sm remove-item" data-id="${id}" title="Удалить")
+
+mixin rowTmplWithStatus()
+    script(id="rowTmpl" type="text/x-jquery-tmpl")
+        tr(data-id="${id}" class="statused status-${status}")
+            if block 
+                block

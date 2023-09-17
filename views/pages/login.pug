@@ -1,0 +1,25 @@
+extends ../layouts/main
+
+block head 
+  link(href="/css/login.css" rel="stylesheet")
+
+block content 
+  main(class="form-signin w-100 m-auto")
+    
+    form
+      h1(class="h3 mb-3 fw-normal") Авторизация
+      
+      div(class="form-floating")
+        input(type="text" class="form-control" name="login" id="floatingInput" placeholder="Логин")
+        label(for="floatingInput") Логин
+      
+      div(class="form-floating")
+        input(type="password" class="form-control" name="password" id="floatingPassword" placeholder="Пароль")
+        label(for="floatingPassword") Пароль
+
+      button(class="btn btn-primary w-100 py-2" type="submit") Войти
+
+      div(class="alert alert-danger mt-3" style="display:none")
+
+block scripts
+  script(src="/js/login.js")
