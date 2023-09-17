@@ -26,6 +26,17 @@ class BaseController {
         }
     }
 
+    async getItem(req, res) {
+        try {
+            const { id } = req.params
+            const item = await this.model.findByPk(id)
+            res.json(item)
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({ status: 0 })
+        }
+    }
+
     // Удаляет запись из базы
     async removeItem(req, res) {
         const { id } = req.body
@@ -62,7 +73,7 @@ class BaseController {
             res.status(400).json({ status: 0 })
         }
     }
-    
+
 }
 
 module.exports = BaseController

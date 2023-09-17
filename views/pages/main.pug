@@ -6,11 +6,10 @@ append content
 
         +pageHead('Рассылки')
 
-        +table(['Название', 'Тема', 'Группы', 'Отправитель', 'Шаблон', 'Прогресс', 'Время создания', 'Создатель', 'Статус'])
+        +table(['Тема', 'Группы', 'Отправитель', 'Шаблон', 'Прогресс', 'Время создания', 'Создатель', 'Статус'])
 
 
     +modalAdd('Добавить рассылку')
-        +modalField('name','Название')
         +modalField('subject','Тема')
         +modalSelect('templateId', 'Шаблон')
         +modalSelect('transportId', 'Отправитель')
@@ -18,7 +17,6 @@ append content
 
 block scripts
     +rowTmplWithStatus()
-        +cell('name')
         +cell('subject')
         td 
             div 

@@ -16,11 +16,24 @@ $(async function () {
     })).appendTo('#transportId')
 
 
+    setInterval(() => {
+        const runTasks = $(".statused.status-1")
+
+        runTasks.each(async (i, task) => {
+            const { id } = $(task).data()
+            const item = await $.get(`/deliveries/item/${id}`)
+            if (item.status != 1) {
+                $(`tr[data-id=${id}]`).replaceWith($('#rowTmpl').tmpl(item))
+            }
+        })
+    }, 5000)
+
+
     tableEditor('deliveries')
 
     $(".save-item").click(function () {
         data = {}
-        data.name = $("#name").val().trim()
+        data.name = ''//$("#name").val().trim()
         data.subject = $("#subject").val().trim()
         data.templateId = $("#templateId").val()
         data.transportId = $("#transportId").val()
@@ -31,8 +44,8 @@ $(async function () {
         if (data.groups.length == 0) {
             return alert("Неоходимо выбрать хотя бы одну группу")
         }
-        if (data.name == '') {
-            return alert('Не указано название')
+        if (data.subject == '') {
+            return alert('Тема не указана')
         }
         $.post('/deliveries/add', data).done(item => {
             $("#rowTmpl").tmpl(item).prependTo($('tbody'))
