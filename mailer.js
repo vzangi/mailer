@@ -78,7 +78,7 @@ console.log(`Ищу рассылку с Id = ${deliveryId}.`);
         process.exit()
     }
 
-    console.log(`Рассылка найдена (${delivery.name}). Статус: ${Delivery.statusNames[delivery.status]}`);
+    console.log(`Рассылка найдена (${delivery.subject}). Статус: ${Delivery.statusNames[delivery.status]}`);
 
     if (delivery.status != Delivery.statuses.LAUNCHED) {
         console.log('Рассылка не запущена. Завершение работы процесса.');

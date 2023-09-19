@@ -35,6 +35,8 @@ $(async function () {
                 $("#rowTmpl").tmpl(address).prependTo($('tbody'))
                 $("#addItemForm").modal('hide')
                 $("#addItemForm").find("input:not(.form-check-input)").val('')
+            }).fail(err => {
+                alert('При добавлении адреса произошла ошибка. Возможно указанный адрес уже в базе.')
             })
         }
     })

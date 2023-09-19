@@ -45,8 +45,8 @@ class AddressesController extends BaseController {
 
             res.json(addr)
         } catch (err) {
-            console.log(err);
-            res.satus(400).json({ ok: 0 })
+            console.log(err.errors);
+            res.status(400).json({ ok: 0 })
         }
     }
 
