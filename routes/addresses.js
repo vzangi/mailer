@@ -12,4 +12,6 @@ router.post('/add', controller.addItem.bind(controller))
 router.post('/find', controller.findItems.bind(controller))
 router.post('/edit_groups', controller.editGroups.bind(controller))
 
+router.get('/backup', controller.backup.bind(controller))
+
 module.exports = router

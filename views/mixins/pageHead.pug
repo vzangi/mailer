@@ -4,4 +4,6 @@ mixin pageHead(title)
             h1= title
         div(class="col-6 text-end")
             a(class="btn btn-success btn add-item" data-bs-toggle="modal" data-bs-target="#addItemForm") Добавить
+            if block 
+                block
     hr

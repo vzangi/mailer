@@ -68,4 +68,14 @@ $(async function () {
 
         $("#selectGroupForm").modal('hide')
     })
+
+    // Выгрузка списка адресов
+    $("#backup").click(function(){
+        $.ajax({
+            url: '/addresses/backup',
+            success: function(r){
+                window.open('/files/file.xls','_blank')
+            }
+        })
+    })
 })

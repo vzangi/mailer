@@ -1,3 +1,4 @@
+const fs = require('fs')
 const { Op } = require('sequelize')
 const BaseController = require('./BaseController')
 const Address = require('../models/Address')
@@ -68,6 +69,24 @@ class AddressesController extends BaseController {
         const addr = await this.model.scope('withGroups').findByPk(addressId)
 
         res.json(addr)
+    }
+
+    // Выгрузка списка адресов
+    async backup(req, res) {
+        const excel = fs.createWriteStream('./public/files/file.xls');
+
+        excel.write("#\tE-mail\tКлиент\tГруппы\n");
+
+        const addresses = await Address.scope('withGroups').findAll()
+        for (let index = 0; index < addresses.length; index++) {
+            const groups = addresses[index].deliveryGroups.map(g => g.name).join(',')
+            const row = `${index + 1}\t${addresses[index].email}\t${addresses[index].client}\t${groups}\n`
+            excel.write(row)
+        }
+
+        excel.close();
+
+        res.json('ok')
     }
 
 }
