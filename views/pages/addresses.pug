@@ -5,6 +5,7 @@ append content
     div(class="container mt-4")
         +pageHead('Адреса')
             button(id="backup" class="btn btn-primary ion-ios-cloud-download-outline ms-2" title="Выгрузить") 
+            button(id="upload" class="btn btn-warning ion-ios-list-outline ms-2" title="Загрузить из файла") 
 
         div(class="row")
             div(class="col-12")
@@ -14,7 +15,7 @@ append content
                     button(class="btn btn-primary" type="button" id="findAddressBtn") Найти
 
         +table(['Адрес', 'Клиент', 'Группы'])
-    
+
     +modalAdd('Добавить адрес')
         +modalField('email','Адрес', 'email')
         +modalField('client','Клиент')
@@ -24,6 +25,26 @@ append content
         +modalChecks('groups', 'Группы')
         input(type="hidden" id="selectAddressId")
 
+
+    div(class="modal fade" id="loadFromFileForm" tabindex="-1" style="display: none" aria-hidden="true")
+        div(class="modal-dialog")
+            div(class="modal-content")
+                div(class="modal-header")
+                    h5(class="modal-title") Загрузка адресов из файла
+                    button(class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close")
+                form(method="post" action="/addresses/restore" enctype='multipart/form-data')
+                    div(class="modal-body")
+                        div(class="mb-3")
+                            label(class="form-label" for="file") Файл
+                            input(class="form-control" type="file" name="file" placeholder="Файл" accept=".xls,.xlsx" required)
+                        div(class="mb-3")
+                            label(class="form-label") Группы
+                            div(class="groups")
+                    div(class="modal-footer")
+                        button(class="btn btn-secondary" type="button" data-bs-dismiss="modal") Закрыть
+                        button(class="btn btn-primary load-items-btn" type="submit") Загрузить
+
+
 block scripts 
     +rowTmpl()
         +cell('email')
@@ -32,10 +53,9 @@ block scripts
             div 
                 span(class="ion-edit editGroupsBtn me-1" data-id="${id}" data-groups="${JSON.stringify(deliveryGroups)}") 
                 span ${deliveryGroups.map(g => g.name).join(', ')}
-    
+
         +lastCell()
 
     +modalCheckBox()
 
     script(src="/js/addresses.js")
-    

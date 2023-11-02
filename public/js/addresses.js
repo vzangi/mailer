@@ -1,81 +1,95 @@
 $(async function () {
+  tableEditor('addresses', false)
 
-    tableEditor('addresses', false)
+  // Подгружаю список групп
+  const groups = await $.get('/groups/all')
 
-    // Подгружаю список групп
-    const groups = await $.get('/groups/all')
+  // Вывожу их в модальные окна
+  $('#modalCheckboxTmpl').tmpl(groups).appendTo('#addItemForm .groups')
+  $('#modalCheckboxTmpl').tmpl(groups).appendTo('#selectGroupForm .groups')
+  $('#modalCheckboxTmpl').tmpl(groups).appendTo('#loadFromFileForm .groups')
 
-    // Вывожу их в модальные окна
-    $("#modalCheckboxTmpl").tmpl(groups).appendTo('#addItemForm .groups')
-    $("#modalCheckboxTmpl").tmpl(groups).appendTo('#selectGroupForm .groups')
+  $('#loadFromFileForm input[type=file]').attr('accept', '.xls,.xlsx')
 
-    // Действие при нажатии на кнопку "Найти" - поиск адресов в базе
-    $('#findAddressBtn').click(async function () {
-        const address = $("#findAddress").val().trim()
-        if (address == '') {
-            $('tbody').empty()
-            return false
-        }
+  // Действие при нажатии на кнопку "Найти" - поиск адресов в базе
+  $('#findAddressBtn').click(async function () {
+    const address = $('#findAddress').val().trim()
+    if (address == '') {
+      $('tbody').empty()
+      return false
+    }
 
-        const finded = await $.post('/addresses/find', { address })
+    const finded = await $.post('/addresses/find', { address })
 
-        $("#rowTmpl").tmpl(finded).appendTo($('tbody').empty())
+    $('#rowTmpl').tmpl(finded).appendTo($('tbody').empty())
+  })
+
+  // Добавление новоо адреса в базу
+  $('.save-item').click(function () {
+    const email = $('#email').val().trim()
+    const client = $('#client').val().trim()
+    const checks = []
+    $('#addItemForm .form-check input').each((i, cbox) => {
+      if (cbox.checked) checks.push(cbox.value)
+    })
+    if (email != '') {
+      $.post('/addresses/add', { email, client, checks })
+        .done((address) => {
+          $('#rowTmpl').tmpl(address).prependTo($('tbody'))
+          $('#addItemForm').modal('hide')
+          $('#addItemForm').find('input:not(.form-check-input)').val('')
+        })
+        .fail((err) => {
+          alert(
+            'При добавлении адреса произошла ошибка. Возможно указанный адрес уже в базе.'
+          )
+        })
+    }
+  })
+
+  // Открытие окна редактирования групп адреса
+  $('.table-editor').on('click', '.editGroupsBtn', function () {
+    const { id, groups } = $(this).data()
+    $('#selectAddressId').val(id)
+    $('#selectGroupForm .form-check input').each((i, cbox) => {
+      cbox.checked = false
+    })
+    groups.map((g) => {
+      $('#selectGroupForm #flexCheck_' + g.id)[0].checked = true
+    })
+    $('#selectGroupForm').modal('show')
+  })
+
+  // Сохранение отредактированного списка групп адреса
+  $('#selectGroupForm .save-groups').click(async function () {
+    const addressId = $('#selectAddressId').val().trim()
+    const checks = []
+    $('#selectGroupForm .form-check input').each((i, cbox) => {
+      if (cbox.checked) checks.push(cbox.value)
     })
 
-    // Добавление новоо адреса в базу
-    $(".save-item").click(function () {
-        const email = $("#email").val().trim()
-        const client = $("#client").val().trim()
-        const checks = []
-        $("#addItemForm .form-check input").each((i, cbox) => {
-            if (cbox.checked) checks.push(cbox.value)
-        })
-        if (email != '') {
-            $.post('/addresses/add', { email, client, checks }).done(address => {
-                $("#rowTmpl").tmpl(address).prependTo($('tbody'))
-                $("#addItemForm").modal('hide')
-                $("#addItemForm").find("input:not(.form-check-input)").val('')
-            }).fail(err => {
-                alert('При добавлении адреса произошла ошибка. Возможно указанный адрес уже в базе.')
-            })
-        }
+    const address = await $.post('/addresses/edit_groups', {
+      addressId,
+      checks,
     })
 
-    // Открытие окна редактирования групп адреса
-    $(".table-editor").on('click', '.editGroupsBtn', function () {
-        const { id, groups } = $(this).data()
-        $("#selectAddressId").val(id)
-        $("#selectGroupForm .form-check input").each((i, cbox) => {
-            cbox.checked = false
-        })
-        groups.map(g => {
-            $("#selectGroupForm #flexCheck_" + g.id)[0].checked = true
-        })
-        $("#selectGroupForm").modal('show')
+    $(`tr[data-id=${addressId}]`).replaceWith($('#rowTmpl').tmpl(address))
+
+    $('#selectGroupForm').modal('hide')
+  })
+
+  // Выгрузка списка адресов
+  $('#backup').click(function () {
+    $.ajax({
+      url: '/addresses/backup',
+      success: function (r) {
+        console.log(r)
+        window.open(`/files/${r}`, '_blank')
+      },
     })
+  })
 
-    // Сохранение отредактированного списка групп адреса
-    $("#selectGroupForm .save-groups").click(async function () {
-        const addressId = $("#selectAddressId").val().trim()
-        const checks = []
-        $("#selectGroupForm .form-check input").each((i, cbox) => {
-            if (cbox.checked) checks.push(cbox.value)
-        })
-
-        const address = await $.post('/addresses/edit_groups', { addressId, checks })
-
-        $(`tr[data-id=${addressId}]`).replaceWith( $("#rowTmpl").tmpl(address) )
-
-        $("#selectGroupForm").modal('hide')
-    })
-
-    // Выгрузка списка адресов
-    $("#backup").click(function(){
-        $.ajax({
-            url: '/addresses/backup',
-            success: function(r){
-                window.open('/files/file.xls','_blank')
-            }
-        })
-    })
+  $('#upload').click(function () {
+    $('#loadFromFileForm').modal('show')
+  })
 })
